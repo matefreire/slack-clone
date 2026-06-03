@@ -1,0 +1,48 @@
+{
+  "css.lint.unknownAtRules": "ignore",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "css.customData": [".vscode/tailwind.css-data.json"],
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/out/**": true,
+    "**/build/**": true,
+    "**/dist/**": true,
+    "**/coverage/**": true,
+    "**/.vercel/**": true,
+    "**/.turbo/**": true,
+    "**/.cache/**": true,
+    "**/.yarn/cache/**": true,
+    "**/.yarn/unplugged/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/node_modules/**": true,
+    "**/.next": true,
+    "**/.next/**": true,
+    "**/out": true,
+    "**/out/**": true,
+    "**/build": true,
+    "**/build/**": true,
+    "**/dist": true,
+    "**/dist/**": true,
+    "**/coverage": true,
+    "**/coverage/**": true,
+    "**/.vercel": true,
+    "**/.vercel/**": true,
+    "**/.turbo": true,
+    "**/.turbo/**": true,
+    "**/.cache": true,
+    "**/.cache/**": true,
+    "**/.yarn/cache": true,
+    "**/.yarn/cache/**": true,
+    "**/.yarn/unplugged": true,
+    "**/.yarn/unplugged/**": true,
+    "**/*.tsbuildinfo": true,
+    "next-env.d.ts": true
+  }
+}
