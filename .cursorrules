@@ -1,0 +1,34 @@
+When Cursor auto-generates a Git commit message for this repository, follow Conventional Commits (https://www.conventionalcommits.org/en/v1.0.0/#specification).
+
+## Format
+
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+
+## Allowed types
+
+feat, fix, docs, style, refactor, perf, test, build, ci, chore
+
+## Writing rules
+
+- Write the subject in English, imperative mood, lowercase, no trailing period
+- Scope is optional but recommended for project areas (auth, ui, api, etc.)
+- Body is optional: explain why and add context; do not repeat the diff line by line
+- Breaking changes: append `!` after type/scope or add a `BREAKING CHANGE:` footer
+- Language: English
+
+## Examples
+
+fix: prevent racing of requests
+
+Introduce a request id and a reference to latest request. Dismiss
+incoming responses other than from latest request.
+
+feat(auth): add sign-in card
+
+fix(ui)!: remove deprecated button variants
+
+BREAKING CHANGE: Button variant="ghost" no longer supported
