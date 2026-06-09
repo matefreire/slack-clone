@@ -10,8 +10,17 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { SignInFlow } from "../types";
+import { useState } from "react";
 
-export const SignInCard = () => {
+interface SignInCardProps {
+  setState: (state: SignInFlow) => void;
+}
+
+export const SignInCard = ({ setState }: SignInCardProps) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <Card className="h-full w-full p-8">
       <CardHeader className="px-0 pt-0">
@@ -26,8 +35,8 @@ export const SignInCard = () => {
         <form className="space-y-2.5">
           <Input
             disabled={false}
-            value=""
-            onChange={() => {}}
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
             placeholder="Email"
             type="email"
             required
@@ -35,8 +44,8 @@ export const SignInCard = () => {
 
           <Input
             disabled={false}
-            value=""
-            onChange={() => {}}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
             placeholder="Password"
             type="password"
             required
@@ -72,6 +81,16 @@ export const SignInCard = () => {
             Continue with Github
           </Button>
         </div>
+
+        <p className="text-xs text-muted-foreground">
+          Don&apos;t have an account?
+          <span
+            className="text-sky-700 m-1 hover:underline cursor-pointer"
+            onClick={() => setState("signUp")}
+          >
+            Sign up
+          </span>
+        </p>
       </CardContent>
     </Card>
   );
