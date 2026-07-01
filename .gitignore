@@ -20,6 +20,9 @@
 # production
 /build
 
+# convex (docker temp dir)
+.convex-tmp/
+
 # misc
 .DS_Store
 *.pem
