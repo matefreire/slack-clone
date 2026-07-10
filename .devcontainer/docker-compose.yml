@@ -1,0 +1,21 @@
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/javascript-node:22-bookworm
+    working_dir: /workspaces/slack-clone
+    volumes:
+      - ..:/workspaces/slack-clone:cached
+      - slack_clone_devcontainer_node_modules:/workspaces/slack-clone/node_modules
+      - slack_clone_devcontainer_next:/workspaces/slack-clone/.next
+      - ${CONVEX_CREDS_PATH:-${USERPROFILE:-${HOME}}/.convex}:/home/node/.convex
+    environment:
+      - CONVEX_TMPDIR=/workspaces/slack-clone/.convex-tmp
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=500
+    ports:
+      - "3000:3000"
+    command: sleep infinity
+
+volumes:
+  slack_clone_devcontainer_node_modules:
+  slack_clone_devcontainer_next:

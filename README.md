@@ -4,22 +4,53 @@ A Slack-inspired chat application built with [Next.js](https://nextjs.org) App R
 
 ## Getting Started
 
-Install dependencies and run the development server locally:
+This app uses [Next.js](https://nextjs.org) and [Convex](https://convex.dev). You need a Convex account and a one-time CLI login before the backend sync works.
+
+### Convex login (once)
+
+```bash
+npx convex login
+```
+
+Credentials are stored in `~/.convex` on the host (on Windows: `%USERPROFILE%\.convex`). Docker and the Dev Container mount that folder so you do not need to log in again inside the container.
+
+### Local (no Docker)
 
 ```bash
 npm install
+npm run dev:stack
+```
+
+`dev:stack` runs `convex dev` and Next.js together. Alternatively, use two terminals:
+
+```bash
+npx convex dev
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000). On the first run, `convex dev` writes `NEXT_PUBLIC_CONVEX_URL` to `.env.local`. If the Next process started before that file existed, restart it once.
 
-## Contributing
+### Dev Container (Cursor / VS Code)
 
-### Running with Docker
+**Prerequisites:** Docker Desktop and Dev Containers support in the editor.
 
-**Prerequisites:** Docker Engine and Docker Compose v2.
+1. Open the repo and choose **Reopen in Container** (or **Dev Containers: Reopen in Container**).
+2. Wait for `postCreateCommand` (`npm install`).
+3. In the integrated terminal:
 
-Start the development environment from the repository root:
+```bash
+npm run dev:stack
+```
+
+The app is forwarded to [http://localhost:3000](http://localhost:3000).
+
+Or use separate terminals: `npx convex dev` and `npm run dev:docker`.
+
+### Docker Compose
+
+**Prerequisites:** Docker Engine and Docker Compose v2, plus `npx convex login` on the host (see above).
+
+From the repository root:
 
 ```bash
 docker compose -f docker/docker-compose.yml up
@@ -32,15 +63,26 @@ cd docker
 docker compose up
 ```
 
-The app will be available at [http://localhost:3000](http://localhost:3000).
+This runs `npm install` and `npm run dev:stack` (Convex + Next). The app is at [http://localhost:3000](http://localhost:3000).
+
+If the Convex project is not linked yet and the CLI asks for interactive input:
+
+```bash
+docker compose -f docker/docker-compose.yml run --rm -it app npx convex login
+docker compose -f docker/docker-compose.yml run --rm -it app npx convex dev
+```
+
+Then start with `up` as usual.
 
 **What happens under the hood:**
 
 - Build context is the repository root; the Dockerfile lives in `docker/Dockerfile`.
-- The container runs `npm install && npm run dev:docker`.
-- The `dev:docker` script binds to all interfaces (`--hostname 0.0.0.0`) so the app is reachable from outside the container.
+- `dev:stack` runs `convex dev` and `dev:docker` via `concurrently`.
+- `dev:docker` binds to all interfaces (`--hostname 0.0.0.0`) so the app is reachable from outside the container.
 - Source code is mounted from the host (`..:/app`).
-- `node_modules` and `.next` use named volumes (`slack_clone_node_modules`, `slack_clone_next`) to avoid cross-platform conflicts between the host and the container.
+- Host Convex credentials are mounted at `/root/.convex` (override with `CONVEX_CREDS_PATH` if needed).
+- Optional `../.env.local` is loaded when present (`env_file`, `required: false`).
+- `node_modules` and `.next` use named volumes to avoid cross-platform conflicts.
 - File-watching uses polling for reliable hot reload on mounted volumes (`WATCHPACK_POLLING`, `CHOKIDAR_USEPOLLING`, `CHOKIDAR_INTERVAL`).
 - `next.config.ts` sets `watchOptions.pollIntervalMs: 500`, aligned with the Docker polling interval.
 
@@ -54,7 +96,9 @@ docker compose -f docker/docker-compose.yml down
 docker compose -f docker/docker-compose.yml up --build
 ```
 
-> **Note:** `.env` files are excluded from the Docker build context (`.dockerignore`). If environment variables are needed, configure them via `env_file` in `docker-compose.yml` or a bind mount.
+> **Note:** `.env` files are excluded from the Docker build context (`.dockerignore`). Runtime env comes from the optional `env_file` and from `convex dev` writing `.env.local` into the mounted workspace.
+
+## Contributing
 
 ### Commit Conventions
 
@@ -115,6 +159,7 @@ src/
 └── hooks/            # Shared hooks (alias configured; folder may be empty)
 public/               # Static assets
 docker/               # Dockerfile and compose
+.devcontainer/        # Cursor / VS Code Dev Container
 ```
 
 **Organization rules:**

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:docker": "next dev --hostname 0.0.0.0 --webpack",
+    "dev:stack": "concurrently -k -n convex,next -c magenta,cyan \"convex dev\" \"npm run dev:docker\"",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -30,6 +31,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^10.0.3",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
