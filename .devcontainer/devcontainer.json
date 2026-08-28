@@ -10,7 +10,11 @@
       "onAutoForward": "notify"
     }
   },
+  "remoteUser": "node",
+  "updateRemoteUserUID": false,
+  "onCreateCommand": "sed 's/\\r$//' .devcontainer/fix-permissions.sh | bash",
   "postCreateCommand": "mkdir -p .convex-tmp && npm install",
+  "postStartCommand": "sed 's/\\r$//' .devcontainer/fix-permissions.sh | bash",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -18,6 +22,5 @@
         "bradlc.vscode-tailwindcss"
       ]
     }
-  },
-  "remoteUser": "node"
+  }
 }
