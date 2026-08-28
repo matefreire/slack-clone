@@ -2,6 +2,7 @@ services:
   app:
     image: mcr.microsoft.com/devcontainers/javascript-node:22-bookworm
     working_dir: /workspaces/slack-clone
+    user: "0:0"
     volumes:
       - ..:/workspaces/slack-clone:cached
       - slack_clone_devcontainer_node_modules:/workspaces/slack-clone/node_modules
@@ -14,7 +15,12 @@ services:
       - CHOKIDAR_INTERVAL=500
     ports:
       - "3000:3000"
-    command: sleep infinity
+    command:
+      - bash
+      - -lc
+      - |
+        sed 's/\r$//' /workspaces/slack-clone/.devcontainer/fix-permissions.sh | bash
+        exec sleep infinity
 
 volumes:
   slack_clone_devcontainer_node_modules:

@@ -35,7 +35,7 @@ Open [http://localhost:3000](http://localhost:3000). On the first run, `convex d
 **Prerequisites:** Docker Desktop and Dev Containers support in the editor.
 
 1. Open the repo and choose **Reopen in Container** (or **Dev Containers: Reopen in Container**).
-2. Wait for `postCreateCommand` (`npm install`).
+2. Wait for `postCreateCommand` (`npm install`). The container starts as root, fixes workspace ownership for the `node` user, then your terminal runs as `node`.
 3. In the integrated terminal:
 
 ```bash
